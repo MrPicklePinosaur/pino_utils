@@ -23,6 +23,19 @@ mod tests {
 
     /*
     #[test]
+    fn advanced_enum() {
+
+        #[stringify]
+        enum CoolEnum {
+            Single,
+            Tuple(String),
+            Struct { a: String, b: u32 },
+        }
+    }
+    */
+
+    /*
+    #[test]
     fn stringify_struct() {
 
         #[stringify(a)]
