@@ -1,10 +1,5 @@
-[package]
-name = "pino_utils"
-version = "0.1.0"
-authors = ["pinosaur"]
-description = "general rust utility functions and macros"
-repository = "https://github.com/MrPicklePinosaur/pino_utils"
-edition = "2021"
-
-[dependencies]
-
+[workspace]
+members = [
+    "pino_utils",
+    "enum_string",
+]

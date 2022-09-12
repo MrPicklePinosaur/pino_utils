@@ -1,6 +1,8 @@
 [package]
-name = "pino_utils_derive"
+name = "enum_string"
 version = "0.1.0"
+authors = ["pinosaur"]
+repository = "https://github.com/MrPicklePinosaur/pino_utils"
 edition = "2021"
 
 [lib]

@@ -1,3 +1,4 @@
+default: chk
 
 devsetup:
     cp dev/hooks/* .git/hooks
