@@ -4,6 +4,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse::Parse, parse_macro_input, Item, ItemEnum, Ident}; 
 
+// mode sorta useless, since the user can just manipulate the string after however they wish
 enum Mode {
     Verbatim,
     LowerCase,
@@ -33,7 +34,7 @@ pub fn stringify(attr: TokenStream, input: TokenStream) -> TokenStream {
     let parsed_attr = parse_macro_input!(attr as Mode);
 
     if let Item::Enum(item) = parsed_input {
-        gen(item)
+        gen(item, parsed_attr)
     } else {
         quote!{
             compile_error!("not used on enum");

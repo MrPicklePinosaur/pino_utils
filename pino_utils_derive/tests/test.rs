@@ -7,18 +7,48 @@ mod tests {
     #[test]
     fn stringify_basic() {
         
-        #[stringify]
+        #[stringify(verbatim)]
         enum Weapon {
             Gun,
             Sword,
             Knife,
-            Hammer
         }
 
         assert_eq!("Gun", Weapon::Gun.to_string());
         assert_eq!("Sword", Weapon::Sword.to_string());
         assert_eq!("Knife", Weapon::Knife.to_string());
-        assert_eq!("Hammer", Weapon::Hammer.to_string());
+    }
+
+    #[test]
+    fn lowercase() {
+        
+        #[stringify(lowercase)]
+        enum Weapon {
+            Gun,
+            Sword,
+            Knife,
+        }
+
+        assert_eq!("gun", Weapon::Gun.to_string());
+        assert_eq!("sword", Weapon::Sword.to_string());
+        assert_eq!("knife", Weapon::Knife.to_string());
+
+    }
+
+    #[test]
+    fn uppercase() {
+        
+        #[stringify(uppercase)]
+        enum Weapon {
+            Gun,
+            Sword,
+            Knife,
+        }
+
+        assert_eq!("GUN", Weapon::Gun.to_string());
+        assert_eq!("SWORD", Weapon::Sword.to_string());
+        assert_eq!("KNIFE", Weapon::Knife.to_string());
+
     }
 
     /*
