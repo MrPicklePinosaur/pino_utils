@@ -1,79 +1,11 @@
 
-#[cfg(test)]
-mod tests {
-
-    use pino_utils_derive::stringify;
-
-    #[test]
-    fn stringify_basic() {
-        
-        #[stringify(verbatim)]
-        enum Weapon {
-            Gun,
-            Sword,
-            Knife,
-        }
-
-        assert_eq!("Gun", Weapon::Gun.to_string());
-        assert_eq!("Sword", Weapon::Sword.to_string());
-        assert_eq!("Knife", Weapon::Knife.to_string());
-    }
-
-    #[test]
-    fn lowercase() {
-        
-        #[stringify(lowercase)]
-        enum Weapon {
-            Gun,
-            Sword,
-            Knife,
-        }
-
-        assert_eq!("gun", Weapon::Gun.to_string());
-        assert_eq!("sword", Weapon::Sword.to_string());
-        assert_eq!("knife", Weapon::Knife.to_string());
-
-    }
-
-    #[test]
-    fn uppercase() {
-        
-        #[stringify(uppercase)]
-        enum Weapon {
-            Gun,
-            Sword,
-            Knife,
-        }
-
-        assert_eq!("GUN", Weapon::Gun.to_string());
-        assert_eq!("SWORD", Weapon::Sword.to_string());
-        assert_eq!("KNIFE", Weapon::Knife.to_string());
-
-    }
-
-    /*
-    #[test]
-    fn advanced_enum() {
-
-        #[stringify]
-        enum CoolEnum {
-            Single,
-            Tuple(String),
-            Struct { a: String, b: u32 },
-        }
-    }
-    */
-
-    /*
-    #[test]
-    fn stringify_struct() {
-
-        #[stringify(a)]
-        struct Player {
-            name: String,
-            health: u32
-        }
-
-    }
-    */
+#[test]
+fn tests() {
+    let t = trybuild::TestCases::new();
+    t.pass("tests/01-simple.rs");
+    t.pass("tests/02-lowercase.rs");
+    t.pass("tests/03-uppercase.rs");
+    // t.pass("tests/04-advanced.rs");
+    t.compile_fail("tests/05-struct.rs");
+    t.compile_fail("tests/06-invalid_mode.rs");
 }
