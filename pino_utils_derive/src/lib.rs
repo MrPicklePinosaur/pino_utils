@@ -8,26 +8,34 @@ use syn::{parse, parse_macro_input, Item, ItemEnum, Data};
 pub fn stringify(attr: TokenStream, input: TokenStream) -> TokenStream {
     let data = parse_macro_input!(input as Item);
 
-    let output = if let Item::Enum(item) = data {
-        let name = &item.ident;
-        quote!{
-            #[derive(Debug)]
-            enum #name {
-                
-            }
-
-            impl std::fmt::Display for #name {
-                fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                    write!(f, "{:?}", self)
-                }
-            }
-        }
+    if let Item::Enum(item) = data {
+        gen(item)
     } else {
         quote!{
             compile_error!("not used on enum");
-        }
-    };
-
-    output.into()
+        }.into()
+    }
 }
 
+fn gen(item: ItemEnum) -> TokenStream {
+    let name = &item.ident;
+
+    let arms = item.variants
+        .iter()
+        .map(|variant| quote!{ #name::#variant => write!(f, "{}", stringify!(#variant))})
+        .collect::<Vec<_>>();
+
+    let output = quote!{
+
+        #item
+
+        impl std::fmt::Display for #name {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                match self {
+                    #(#arms ,)*
+                }
+            }
+        }
+    };
+    output.into()
+}

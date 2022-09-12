@@ -5,9 +5,9 @@ mod tests {
     use pino_utils_derive::stringify;
 
     #[test]
-    fn stringify() {
+    fn stringify_basic() {
         
-        #[stringify(a)]
+        #[stringify]
         enum Weapon {
             Gun,
             Sword,
@@ -15,8 +15,13 @@ mod tests {
             Hammer
         }
 
+        assert_eq!("Gun", Weapon::Gun.to_string());
+        assert_eq!("Sword", Weapon::Sword.to_string());
+        assert_eq!("Knife", Weapon::Knife.to_string());
+        assert_eq!("Hammer", Weapon::Hammer.to_string());
     }
 
+    /*
     #[test]
     fn stringify_struct() {
 
@@ -27,4 +32,5 @@ mod tests {
         }
 
     }
+    */
 }
