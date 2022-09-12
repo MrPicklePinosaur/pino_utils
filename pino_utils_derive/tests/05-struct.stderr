@@ -1,0 +1,7 @@
+error: not used on enum
+ --> tests/05-struct.rs:4:1
+  |
+4 | #[enum_string]
+  | ^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `enum_string` (in Nightly builds, run with -Z macro-backtrace for more info)

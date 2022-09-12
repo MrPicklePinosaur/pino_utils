@@ -36,7 +36,7 @@ impl Parse for Mode {
 }
 
 #[proc_macro_attribute]
-pub fn stringify(attr: TokenStream, input: TokenStream) -> TokenStream {
+pub fn enum_string(attr: TokenStream, input: TokenStream) -> TokenStream {
     let parsed_input = parse_macro_input!(input as Item);
 
     let parsed_attr = parse_macro_input!(attr as Mode);
