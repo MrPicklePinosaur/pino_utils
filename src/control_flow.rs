@@ -19,7 +19,7 @@ macro_rules! ok_or_return_msg {
             Ok(x) => x,
             Err(e) => {
                 $f(e);
-                return
+                return;
             },
         }
     };
@@ -44,7 +44,7 @@ macro_rules! ok_or_continue_msg {
             Ok(x) => x,
             Err(e) => {
                 $f(e);
-                continue
+                continue;
             },
         }
     };
@@ -69,7 +69,7 @@ macro_rules! some_or_return_msg {
             Some(x) => x,
             None => {
                 $f();
-                return
+                return;
             },
         }
     };
@@ -94,7 +94,7 @@ macro_rules! some_or_continue_msg {
             Some(x) => x,
             None => {
                 $f();
-                continue
+                continue;
             },
         }
     };

@@ -50,4 +50,3 @@ pub fn ansi_string(s: &str, color: Color, effect: Effect) -> String {
     let effect_val = effect.value();
     format!("\x1b[{}{}m{}\x1b[0m", effect_val, color_val, s)
 }
-
