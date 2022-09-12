@@ -1,0 +1,15 @@
+error: macros that expand to items must be delimited with braces or followed by a semicolon
+ --> tests/06-invalid_mode.rs:4:1
+  |
+4 | #[enum_string(invalid)]
+  | ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `enum_string` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: invalid mode
+ --> tests/06-invalid_mode.rs:4:1
+  |
+4 | #[enum_string(invalid)]
+  | ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `enum_string` (in Nightly builds, run with -Z macro-backtrace for more info)
