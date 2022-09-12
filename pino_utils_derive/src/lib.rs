@@ -5,7 +5,9 @@ use quote::quote;
 use syn::{parse::Parse, parse_macro_input, Item, ItemEnum, Ident}; 
 
 // mode sorta useless, since the user can just manipulate the string after however they wish
+#[derive(Eq, PartialEq)]
 enum Mode {
+    Invalid,
     Verbatim,
     LowerCase,
     UpperCase,
@@ -13,6 +15,12 @@ enum Mode {
 
 impl Parse for Mode {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+
+        // default to verbatim if no option is supplied
+        if input.is_empty() {
+            return Ok(Mode::Verbatim);
+        }
+
         let mode_string = input.parse::<Ident>()?;
         let mode = if mode_string == "verbatim" {
             Mode::Verbatim
@@ -21,7 +29,7 @@ impl Parse for Mode {
         } else if mode_string == "uppercase" {
             Mode::UpperCase
         } else {
-            Mode::Verbatim
+            Mode::Invalid
         };
         Ok(mode)
     }
@@ -32,6 +40,11 @@ pub fn stringify(attr: TokenStream, input: TokenStream) -> TokenStream {
     let parsed_input = parse_macro_input!(input as Item);
 
     let parsed_attr = parse_macro_input!(attr as Mode);
+    if parsed_attr == Mode::Invalid {
+        return quote!{
+            compile_error!("invalid mode")
+        }.into()
+    }
 
     if let Item::Enum(item) = parsed_input {
         gen(item, parsed_attr)
@@ -53,6 +66,7 @@ fn gen(item: ItemEnum, mode: Mode) -> TokenStream {
             Mode::Verbatim => variant_name.to_owned(),
             Mode::LowerCase => variant_name.to_lowercase(),
             Mode::UpperCase => variant_name.to_uppercase(),
+            _ => unreachable!()
         };
         let arm = quote!{ #name::#variant => write!(f, "{}", #modified) };
         arms.push(arm);
