@@ -1,5 +1,5 @@
 
-use pino_utils_derive::enum_string;
+use enum_string::enum_string;
 
 #[enum_string(lowercase)]
 enum Weapon {

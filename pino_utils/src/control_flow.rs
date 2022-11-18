@@ -1,4 +1,19 @@
 //! Control flow related macros
+//!
+//! Many times one would like to return from a function or continue iterating if an `Option` or
+//! `Result` was not valid. These are some simple macros to facilitate that.
+//! 
+//! ```rust
+//! use pino_utils::ok_or_continue;
+//! 
+//! fn main() {
+//!     
+//!     for str in vec!["1", "one", "2", "two"] {
+//! 	     let num = ok_or_continue!(str.parse::<u32>());
+//!     }
+//! 
+//! }
+//! ```
 
 /// Unwraps result type or returns
 #[macro_export]

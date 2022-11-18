@@ -1,10 +1,11 @@
 [package]
 name = "pino_utils"
 version = "0.1.0"
-authors = ["pinosaur"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["MrPicklePinosaur"]
 description = "general rust utility functions and macros"
 repository = "https://github.com/MrPicklePinosaur/pino_utils"
-edition = "2021"
 
 [dependencies]
-enum_string = { path = "../enum_string" }
+enum_string = { version = "0.1.0", path = "../enum_string" }
