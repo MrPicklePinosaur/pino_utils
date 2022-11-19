@@ -1,5 +1,5 @@
 
-use enum_string::enum_string;
+use pino_enum_string::enum_string;
 
 #[enum_string(invalid)]
 enum Weapon {

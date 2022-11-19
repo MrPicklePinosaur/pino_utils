@@ -3,15 +3,6 @@
 version = 3
 
 [[package]]
-name = "enum_string"
-version = "0.1.0"
-dependencies = [
- "quote",
- "syn",
- "trybuild",
-]
-
-[[package]]
 name = "glob"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -30,10 +21,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2f7254b99e31cad77da24b08ebf628882739a608578bb1bcdfc1f9c21260d7c0"
 
 [[package]]
+name = "pino_enum_string"
+version = "0.1.0"
+dependencies = [
+ "quote",
+ "syn",
+ "trybuild",
+]
+
+[[package]]
 name = "pino_utils"
 version = "0.1.0"
 dependencies = [
- "enum_string",
+ "pino_enum_string",
 ]
 
 [[package]]

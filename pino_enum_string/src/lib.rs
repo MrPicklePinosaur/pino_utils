@@ -1,3 +1,22 @@
+//! Derive macro to implement display for each variant of enum
+//!
+//! ```rust
+//! use pino_enum_string::enum_string;
+//!
+//! #[enum_string]
+//! enum Weapon {
+//!     Red,
+//!     Blue,
+//!     Green,
+//! }
+//! 
+//! fn main() {
+//!     assert_eq!("Red", Weapon::Red.to_string());
+//!     assert_eq!("Blue", Weapon::Blue.to_string());
+//!     assert_eq!("Green", Weapon::Green.to_string());
+//! }
+//! ```
+
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
