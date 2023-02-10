@@ -42,6 +42,7 @@ dependencies = [
 name = "pino_utils"
 version = "0.1.0"
 dependencies = [
+ "pino_deref",
  "pino_enum_string",
 ]
 

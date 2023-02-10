@@ -1,16 +1,22 @@
 //! Derive macro for Deref and DerefMut
 //!
 //! ```rust
+//! use pino_deref::{Deref, DerefMut};
+//!
+//! #[derive(Deref, DerefMut)]
+//! struct Nametag(pub String);
 //!
 //! fn main() {
+//!     let nametag = Nametag("pinosaur".into());
+//!     assert_eq!(*nametag, String::from("pinosaur"));
 //! }
 //! ```
 
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
-use quote::{quote, ToTokens};
-use syn::{parse::Parse, parse_macro_input, Fields, Ident, Item, ItemStruct};
+use quote::quote;
+use syn::{parse_macro_input, Fields, Item, ItemStruct};
 
 #[proc_macro_derive(Deref)]
 pub fn deref(input: TokenStream) -> TokenStream {

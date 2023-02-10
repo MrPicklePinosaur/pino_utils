@@ -8,4 +8,5 @@ pub mod ansi_string;
 pub mod cmp;
 pub mod control_flow;
 
+pub use pino_deref::*;
 pub use pino_enum_string::*;
