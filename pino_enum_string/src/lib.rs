@@ -9,7 +9,7 @@
 //!     Blue,
 //!     Green,
 //! }
-//! 
+//!
 //! fn main() {
 //!     assert_eq!("Red", Weapon::Red.to_string());
 //!     assert_eq!("Blue", Weapon::Blue.to_string());
@@ -21,7 +21,7 @@ extern crate proc_macro;
 
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse::Parse, parse_macro_input, Item, ItemEnum, Ident}; 
+use syn::{parse::Parse, parse_macro_input, Ident, Item, ItemEnum};
 
 // mode sorta useless, since the user can just manipulate the string after however they wish
 #[derive(Eq, PartialEq)]
@@ -34,7 +34,6 @@ enum Mode {
 
 impl Parse for Mode {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-
         // default to verbatim if no option is supplied
         if input.is_empty() {
             return Ok(Mode::Verbatim);
@@ -60,17 +59,19 @@ pub fn enum_string(attr: TokenStream, input: TokenStream) -> TokenStream {
 
     let parsed_attr = parse_macro_input!(attr as Mode);
     if parsed_attr == Mode::Invalid {
-        return quote!{
+        return quote! {
             compile_error!("invalid mode")
-        }.into()
+        }
+        .into();
     }
 
     if let Item::Enum(item) = parsed_input {
         gen(item, parsed_attr)
     } else {
-        quote!{
+        quote! {
             compile_error!("not used on enum");
-        }.into()
+        }
+        .into()
     }
 }
 
@@ -85,13 +86,13 @@ fn gen(item: ItemEnum, mode: Mode) -> TokenStream {
             Mode::Verbatim => variant_name.to_owned(),
             Mode::LowerCase => variant_name.to_lowercase(),
             Mode::UpperCase => variant_name.to_uppercase(),
-            _ => unreachable!()
+            _ => unreachable!(),
         };
-        let arm = quote!{ #name::#variant => write!(f, "{}", #modified) };
+        let arm = quote! { #name::#variant => write!(f, "{}", #modified) };
         arms.push(arm);
     }
 
-    let output = quote!{
+    let output = quote! {
 
         #item
 

@@ -1,4 +1,3 @@
-
 use pino_enum_string::enum_string;
 
 #[enum_string]
