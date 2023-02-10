@@ -27,21 +27,21 @@ pub fn deref(input: TokenStream) -> TokenStream {
 }
 
 fn impl_deref(item: ItemStruct) -> TokenStream {
-    let struct_name = item.ident;
+    let struct_name = &item.ident;
 
     match item.fields {
-	Fields::Named(inner) => {
+	Fields::Named(ref inner) => {
 	    if inner.named.len() != 1 {
 		return quote! {
 		    compile_error!("named struct must have only one field")
 		}.into();
 	    }
-	    
+
 	    let field = inner.named.first().unwrap();
 	    let field_type = &field.ty;
 	    let field_name = &field.ident;
-	    
-	    quote!{
+
+	    quote! {
 
 		impl std::ops::Deref for #struct_name {
 		    type Target = #field_type;
@@ -52,12 +52,33 @@ fn impl_deref(item: ItemStruct) -> TokenStream {
 
 	    }.into()
 	},
-	Fields::Unnamed(inner) => {
-	    unimplemented!()
+	Fields::Unnamed(ref inner) => {
+	    if inner.unnamed.len() != 1 {
+		return quote! {
+		    compile_error!("unnamed struct must have only one field")
+		}.into();
+	    }
+
+	    let field = inner.unnamed.first().unwrap();
+	    let field_type = &field.ty;
+
+	    quote! {
+
+		impl std::ops::Deref for #struct_name {
+		    type Target = #field_type;
+		    fn deref(&self) -> &Self::Target {
+			&self.0
+		    }
+		}
+
+	    }.into()
 	}
 	Fields::Unit => {
-	    unimplemented!()
+	    return quote! {
+		compile_error!("must not be unit struct")
+	    }.into();
 	}
     }
+	    
 
 }
