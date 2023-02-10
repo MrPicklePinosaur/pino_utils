@@ -8,4 +8,5 @@ description = "general rust utility functions and macros"
 repository = "https://github.com/MrPicklePinosaur/pino_utils"
 
 [dependencies]
-pino_enum_string = { version = "0.1.0", path = "../pino_enum_string" }
+pino_enum_string = { version = "0.1", path = "../pino_enum_string" }
+pino_deref = { version = "0.1", path = "../pino_deref" }
