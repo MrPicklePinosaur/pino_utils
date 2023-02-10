@@ -9,7 +9,7 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
-use quote::quote;
+use quote::{quote, ToTokens};
 use syn::{parse::Parse, parse_macro_input, Item, ItemStruct, Ident, Fields}; 
 
 #[proc_macro_derive(Deref)]
@@ -29,7 +29,7 @@ pub fn deref(input: TokenStream) -> TokenStream {
 fn impl_deref(item: ItemStruct) -> TokenStream {
     let struct_name = &item.ident;
 
-    match item.fields {
+    let (field_type, body) = match item.fields {
 	Fields::Named(ref inner) => {
 	    if inner.named.len() != 1 {
 		return quote! {
@@ -37,20 +37,13 @@ fn impl_deref(item: ItemStruct) -> TokenStream {
 		}.into();
 	    }
 
-	    let field = inner.named.first().unwrap();
-	    let field_type = &field.ty;
-	    let field_name = &field.ident;
+	    let field = inner.named.first().unwrap().clone();
+	    let field_name = field.ident;
+	    let body = quote! {
+		&self.#field_name
+	    };
+	    (field.ty, body)
 
-	    quote! {
-
-		impl std::ops::Deref for #struct_name {
-		    type Target = #field_type;
-		    fn deref(&self) -> &Self::Target {
-			&self.#field_name
-		    }
-		}
-
-	    }.into()
 	},
 	Fields::Unnamed(ref inner) => {
 	    if inner.unnamed.len() != 1 {
@@ -59,26 +52,28 @@ fn impl_deref(item: ItemStruct) -> TokenStream {
 		}.into();
 	    }
 
-	    let field = inner.unnamed.first().unwrap();
-	    let field_type = &field.ty;
-
-	    quote! {
-
-		impl std::ops::Deref for #struct_name {
-		    type Target = #field_type;
-		    fn deref(&self) -> &Self::Target {
-			&self.0
-		    }
-		}
-
-	    }.into()
+	    let field = inner.unnamed.first().unwrap().clone();
+	    let body = quote! {
+		&self.0
+	    };
+	    (field.ty, body)
 	}
 	Fields::Unit => {
 	    return quote! {
 		compile_error!("must not be unit struct")
 	    }.into();
 	}
-    }
+    };
 	    
+    quote! {
+
+	impl std::ops::Deref for #struct_name {
+	    type Target = #field_type;
+	    fn deref(&self) -> &Self::Target {
+		#body
+	    }
+	}
+
+    }.into()
 
 }
