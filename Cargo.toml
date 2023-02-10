@@ -2,4 +2,5 @@
 members = [
     "pino_utils",
     "pino_enum_string",
+    "pino_deref",
 ]
