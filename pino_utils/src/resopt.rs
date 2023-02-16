@@ -2,40 +2,121 @@
 //!
 //! Experimental enum for nullable results
 
-pub struct Resopt<T, E>(pub Result<Option<T>, E>);
+// TODO support ? operator (via std::ops::Try)
 
-impl<T, E> Resopt<T, E>
-where
-    E: std::fmt::Debug,
-{
+pub enum Resopt<T, E> {
+    Some(T),
+    None,
+    Err(E),
+}
+
+impl<T, E> Resopt<T, E> {
+    pub fn expect(self, msg: &str) -> T {
+        unimplemented!()
+    }
     pub fn unwrap(self) -> T {
-        self.0.unwrap().unwrap()
+        match self {
+            Resopt::Some(v) => v,
+            Resopt::None => panic!(""),
+            Resopt::Err(_) => panic!(""),
+        }
+    }
+    pub fn unwrap_or(self) {
+        unimplemented!()
+    }
+    pub fn unwrap_default(self) {
+        unimplemented!()
+    }
+    pub fn unwrap_else(self) {
+        unimplemented!()
+    }
+
+    pub fn as_mut() {
+        unimplemented!()
+    }
+    pub fn as_deref() {
+        unimplemented!()
+    }
+    pub fn as_deref_mut() {
+        unimplemented!()
     }
 
     pub fn is_some(&self) -> bool {
-        self.0.is_ok()
+        if let Resopt::Some(_) = self {
+            true
+        } else {
+            false
+        }
     }
     pub fn is_none(&self) -> bool {
-        self.0.is_ok()
+        if let Resopt::None = self {
+            true
+        } else {
+            false
+        }
     }
     pub fn is_err(&self) -> bool {
-        self.0.is_err()
+        if let Resopt::Err(_) = self {
+            true
+        } else {
+            false
+        }
     }
 
-    // pub fn result(self) -> Result<T, E> {
+    pub fn some(self) -> Option<T> {
+        match self {
+            Resopt::Some(v) => Some(v),
+            Resopt::None => None,
+            Resopt::Err(_) => None,
+        }
+    }
 
-    // }
-}
-
-impl<T, E> std::ops::Deref for Resopt<T, E> {
-    type Target = Result<Option<T>, E>;
-    fn deref(&self) -> &Self::Target {
-        &self.0
+    pub fn err(self) -> Option<E> {
+        match self {
+            Resopt::Some(_) => None,
+            Resopt::None => None,
+            Resopt::Err(e) => Some(e),
+        }
     }
 }
 
-impl<T, E> std::ops::DerefMut for Resopt<T, E> {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
+impl<T, E> From<Option<T>> for Resopt<T, E> {
+    fn from(value: Option<T>) -> Self {
+        match value {
+            Some(v) => Resopt::Some(v),
+            None => Resopt::None,
+        }
+    }
+}
+
+impl<T, E> From<Result<T, E>> for Resopt<T, E> {
+    fn from(value: Result<T, E>) -> Self {
+        match value {
+            Ok(v) => Resopt::Some(v),
+            Err(e) => Resopt::Err(e),
+        }
+    }
+}
+
+impl<T, E> From<Result<Option<T>, E>> for Resopt<T, E> {
+    fn from(value: Result<Option<T>, E>) -> Self {
+        match value {
+            Ok(opt) => Resopt::from(opt),
+            Err(e) => Resopt::Err(e),
+        }
+    }
+}
+
+impl<T, E> std::fmt::Debug for Resopt<T, E>
+where
+    T: std::fmt::Debug,
+    E: std::fmt::Debug,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Resopt::Some(v) => write!(f, "Some({:?})", v),
+            Resopt::None => write!(f, "None"),
+            Resopt::Err(e) => write!(f, "Err({:?})", e),
+        }
     }
 }
