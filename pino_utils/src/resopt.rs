@@ -2,55 +2,40 @@
 //!
 //! Experimental enum for nullable results
 
-pub enum Resopt<T, E> {
-    Ok(T),
-    None,
-    Err(E),
-}
+pub struct Resopt<T, E>(pub Result<Option<T>, E>);
 
 impl<T, E> Resopt<T, E>
 where
     E: std::fmt::Debug,
 {
     pub fn unwrap(self) -> T {
-        match self {
-            Resopt::Ok(v) => v,
-            Resopt::None => panic!(""),
-            Resopt::Err(e) => panic!(""),
-        }
+        self.0.unwrap().unwrap()
     }
 
-    pub fn is_ok(&self) -> bool {
-        if let Resopt::Ok(_) = self {
-            true
-        } else {
-            false
-        }
+    pub fn is_some(&self) -> bool {
+        self.0.is_ok()
     }
     pub fn is_none(&self) -> bool {
-        if let Resopt::None = self {
-            true
-        } else {
-            false
-        }
+        self.0.is_ok()
     }
     pub fn is_err(&self) -> bool {
-        if let Resopt::Err(_) = self {
-            true
-        } else {
-            false
-        }
-    }
-
-    pub fn option(self) -> Option<T> {
-        match self {
-            Resopt::Ok(v) => Some(v),
-            Resopt::None => None,
-            Resopt::Err(_) => None,
-        }
+        self.0.is_err()
     }
 
     // pub fn result(self) -> Result<T, E> {
 
     // }
+}
+
+impl<T, E> std::ops::Deref for Resopt<T, E> {
+    type Target = Result<Option<T>, E>;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T, E> std::ops::DerefMut for Resopt<T, E> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
 }
