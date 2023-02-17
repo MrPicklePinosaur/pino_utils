@@ -68,6 +68,33 @@ pub fn ansi_string(s: &str, color: Color, effect: Effect) -> String {
     format!("\x1b[{}{}m{}\x1b[0m", effect_val, color_val, s)
 }
 
+trait ToAnsiString {
+    fn black(self) -> AnsiString;
+    fn red(self) -> AnsiString;
+    fn green(self) -> AnsiString;
+    fn yellow(self) -> AnsiString;
+    fn blue(self) -> AnsiString;
+    fn purple(self) -> AnsiString;
+    fn cyan(self) -> AnsiString;
+    fn white(self) -> AnsiString;
+
+    fn strong_black(self) -> AnsiString;
+    fn strong_red(self) -> AnsiString;
+    fn strong_green(self) -> AnsiString;
+    fn strong_yellow(self) -> AnsiString;
+    fn strong_blue(self) -> AnsiString;
+    fn strong_purple(self) -> AnsiString;
+    fn strong_cyan(self) -> AnsiString;
+    fn strong_white(self) -> AnsiString;
+
+    fn normal(self) -> AnsiString;
+    fn bold(self) -> AnsiString;
+    fn dim(self) -> AnsiString;
+    fn underline(self) -> AnsiString;
+    fn blinking(self) -> AnsiString;
+    fn reversed(self) -> AnsiString;
+}
+
 #[derive(Default)]
 pub struct AnsiString {
     pub value: String,
@@ -75,7 +102,162 @@ pub struct AnsiString {
     pub effect: Effect,
 }
 
-impl AnsiString {}
+impl ToAnsiString for AnsiString {
+    fn black(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::Black,
+            effect: self.effect,
+        }
+    }
+    fn red(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::Red,
+            effect: self.effect,
+        }
+    }
+    fn green(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::Green,
+            effect: self.effect,
+        }
+    }
+    fn yellow(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::Yellow,
+            effect: self.effect,
+        }
+    }
+    fn blue(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::Blue,
+            effect: self.effect,
+        }
+    }
+    fn purple(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::Purple,
+            effect: self.effect,
+        }
+    }
+    fn cyan(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::Cyan,
+            effect: self.effect,
+        }
+    }
+    fn white(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::White,
+            effect: self.effect,
+        }
+    }
+    fn strong_black(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::StrongBlack,
+            effect: self.effect,
+        }
+    }
+    fn strong_red(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::StrongRed,
+            effect: self.effect,
+        }
+    }
+    fn strong_green(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::StrongGreen,
+            effect: self.effect,
+        }
+    }
+    fn strong_yellow(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::StrongYellow,
+            effect: self.effect,
+        }
+    }
+    fn strong_blue(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::StrongBlue,
+            effect: self.effect,
+        }
+    }
+    fn strong_purple(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::StrongPurple,
+            effect: self.effect,
+        }
+    }
+    fn strong_cyan(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::StrongCyan,
+            effect: self.effect,
+        }
+    }
+    fn strong_white(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::StrongWhite,
+            effect: self.effect,
+        }
+    }
+    fn normal(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: Color::White,
+            effect: Effect::Normal,
+        }
+    }
+    fn bold(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: self.color,
+            effect: Effect::Bold,
+        }
+    }
+    fn dim(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: self.color,
+            effect: Effect::Dim,
+        }
+    }
+    fn underline(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: self.color,
+            effect: Effect::Underline,
+        }
+    }
+    fn blinking(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: self.color,
+            effect: Effect::Blinking,
+        }
+    }
+    fn reversed(self) -> AnsiString {
+        AnsiString {
+            value: self.value,
+            color: self.color,
+            effect: Effect::Reversed,
+        }
+    }
+}
 
 impl Display for AnsiString {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -88,55 +270,157 @@ impl Display for AnsiString {
         }
     }
 }
-
-trait ToAnsiString {
-    fn normal(self) -> AnsiString;
-    fn bold(self) -> AnsiString;
-    fn dim(self) -> AnsiString;
-    fn underline(self) -> AnsiString;
-    fn blinking(self) -> AnsiString;
-    fn reversed(self) -> AnsiString;
-}
-
-impl ToAnsiString for String {
+impl ToAnsiString for &str {
+    fn black(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::Black,
+            effect: Effect::Normal,
+        }
+    }
+    fn red(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::Red,
+            effect: Effect::Normal,
+        }
+    }
+    fn green(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::Green,
+            effect: Effect::Normal,
+        }
+    }
+    fn yellow(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::Yellow,
+            effect: Effect::Normal,
+        }
+    }
+    fn blue(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::Blue,
+            effect: Effect::Normal,
+        }
+    }
+    fn purple(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::Purple,
+            effect: Effect::Normal,
+        }
+    }
+    fn cyan(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::Cyan,
+            effect: Effect::Normal,
+        }
+    }
+    fn white(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::White,
+            effect: Effect::Normal,
+        }
+    }
+    fn strong_black(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::StrongBlack,
+            effect: Effect::Normal,
+        }
+    }
+    fn strong_red(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::StrongRed,
+            effect: Effect::Normal,
+        }
+    }
+    fn strong_green(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::StrongGreen,
+            effect: Effect::Normal,
+        }
+    }
+    fn strong_yellow(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::StrongYellow,
+            effect: Effect::Normal,
+        }
+    }
+    fn strong_blue(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::StrongBlue,
+            effect: Effect::Normal,
+        }
+    }
+    fn strong_purple(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::StrongPurple,
+            effect: Effect::Normal,
+        }
+    }
+    fn strong_cyan(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::StrongCyan,
+            effect: Effect::Normal,
+        }
+    }
+    fn strong_white(self) -> AnsiString {
+        AnsiString {
+            value: self.into(),
+            color: Color::StrongWhite,
+            effect: Effect::Normal,
+        }
+    }
     fn normal(self) -> AnsiString {
         AnsiString {
-            value: self,
+            value: self.into(),
             color: Color::White,
             effect: Effect::Normal,
         }
     }
     fn bold(self) -> AnsiString {
         AnsiString {
-            value: self,
+            value: self.into(),
             color: Color::White,
             effect: Effect::Bold,
         }
     }
     fn dim(self) -> AnsiString {
         AnsiString {
-            value: self,
+            value: self.into(),
             color: Color::White,
             effect: Effect::Dim,
         }
     }
     fn underline(self) -> AnsiString {
         AnsiString {
-            value: self,
+            value: self.into(),
             color: Color::White,
             effect: Effect::Underline,
         }
     }
     fn blinking(self) -> AnsiString {
         AnsiString {
-            value: self,
+            value: self.into(),
             color: Color::White,
             effect: Effect::Blinking,
         }
     }
     fn reversed(self) -> AnsiString {
         AnsiString {
-            value: self,
+            value: self.into(),
             color: Color::White,
             effect: Effect::Reversed,
         }
@@ -144,4 +428,12 @@ impl ToAnsiString for String {
 }
 
 #[cfg(test)]
-mod tests {}
+mod tests {
+
+    use super::ToAnsiString;
+
+    #[test]
+    fn basic() {
+        println!("{}", "hello world".bold().red())
+    }
+}
