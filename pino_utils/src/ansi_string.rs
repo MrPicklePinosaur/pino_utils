@@ -62,6 +62,10 @@ impl Default for Effect {
 
 /// Construct a new ANSI string from a color and an effect
 /// Deprecated
+#[deprecated(
+    since = "0.1.1",
+    note = "Use new AnsiString, as it is much more ergonomic"
+)]
 pub fn ansi_string(s: &str, color: Color, effect: Effect) -> String {
     let color_val = color as isize;
     let effect_val = effect.value();
